@@ -1,3 +1,6 @@
+from termcolor import cprint
+
+
 class Player:
     """
     Player class, Creates player, sets player name, counter colour, player type
@@ -28,20 +31,25 @@ class Board:
         for row in self.board:
             print("| " + " | ".join(row) + " |")
             print("-" * 29)
-        headings = []
-        [headings.append(str(i+1)) for i in range(self.size[0])]
-        print("\n| " + " | ".join(headings) + " |")
 
 
 def play_game(game_board, player_one, player_two):
-    print(("-" * 10) + "CONNECT-4" + ("-" * 10))
+    _title = (" " * 10) + "CONNECT-4" + (" " * 10)
+    cprint(_title, 'green', 'on_white', attrs=['reverse'])
     title_vs = f"{player_one.name} VS {player_two.name}"
     title_len = (len(title_vs)-1)
     _gap = round((29-title_len)/2)
-    _title = (" " * (_gap)) + title_vs + (" " * _gap)
-    print(_title + "\n")
+    vs_title = (" " * (_gap)) + title_vs + (" " * _gap)
+    print(vs_title)
 
     game_board.print_table()
+
+    headings = []
+    [headings.append(str(i+1)) for i in range(game_board.size[0])]
+    print("| " + " | ".join(headings) + " |")
+    print("-" * 29)
+    column_bar = (" " * 11) + "Columns" + (" " * 11)
+    cprint(column_bar, 'green', 'on_white', attrs=['reverse'])
 
 
 def new_game():
