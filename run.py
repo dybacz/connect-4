@@ -24,8 +24,16 @@ class Board:
         self.turns = []
 
     def print_table(self):
+        print("-" * 29)
         for row in self.board:
-            print(" ".join(row))
+            print("| " + " | ".join(row) + " |")
+            print("-" * 29)
+        headings = ["A", "B", "C", "D", "E", "F", "G"]
+        print("| " + " | ".join(headings) + " |")
+
+
+def play_game(game_board, player_one, player_two):
+    game_board.print_table()
 
 
 def new_game():
@@ -49,12 +57,11 @@ def new_game():
         player_names.append(input("Player One - Please enter your name: \n"))
         player_names.append(input("Player Two - Please enter your name: \n"))
 
-
     player_one = Player(player_names[0], "blue", "player")
     player_two = Player(player_names[1], "red", "player")
 
     game_board = Board("Classic", [7, 6], "Player")
-    game_board.print_table()
+    play_game(game_board, player_one, player_two)
 
 
 new_game()
