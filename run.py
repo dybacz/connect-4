@@ -28,8 +28,9 @@ class Board:
         for row in self.board:
             print("| " + " | ".join(row) + " |")
             print("-" * 29)
-        headings = ["A", "B", "C", "D", "E", "F", "G"]
-        print("| " + " | ".join(headings) + " |")
+        headings = []
+        [headings.append(str(i+1)) for i in range(self.size[0])]
+        print("\n| " + " | ".join(headings) + " |")
 
 
 def play_game(game_board, player_one, player_two):
@@ -37,8 +38,8 @@ def play_game(game_board, player_one, player_two):
     title_vs = f"{player_one.name} VS {player_two.name}"
     title_len = (len(title_vs)-1)
     _gap = round((29-title_len)/2)
-    _title = ("-" * (_gap)) + title_vs + ("-" * _gap)
-    print(_title)
+    _title = (" " * (_gap)) + title_vs + (" " * _gap)
+    print(_title + "\n")
 
     game_board.print_table()
 
@@ -48,7 +49,7 @@ def new_game():
     Starts a new game, collects player name.
     """
     # num_players = input("Enter 1 for Singleplayer or 2 for Multiplayer: \n")
-    num_players = 2
+    num_players = 1
     print("*" + ("-" * 36) + "*")
     print("*" + (" " * 4) + "Welcome to Python CONNECT-4!" + (" " * 4) + "*")
     print("*" + (" " * 4) + "Game type: Classic" + (" " * 14) + "*")
