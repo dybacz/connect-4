@@ -33,6 +33,13 @@ class Board:
 
 
 def play_game(game_board, player_one, player_two):
+    print(("-" * 10) + "CONNECT-4" + ("-" * 10))
+    title_vs = f"{player_one.name} VS {player_two.name}"
+    title_len = (len(title_vs)-1)
+    _gap = round((29-title_len)/2)
+    _title = ("-" * (_gap)) + title_vs + ("-" * _gap)
+    print(_title)
+
     game_board.print_table()
 
 
