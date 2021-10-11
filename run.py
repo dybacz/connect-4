@@ -22,34 +22,63 @@ class Board:
     def __init__(self, game_type, size, _vs):
         self.game_type = game_type
         self.size = size
-        self.board = [["." for i in range(size[0])] for j in range(size[1])]
+        self.board = [["." for x in range(size[0])] for y in range(size[1])]
+        self.title = str
         self._vs = _vs
         self.turns = []
 
     def print_table(self):
+        _title = (" " * 10) + "CONNECT-4" + (" " * 10)
+        cprint(_title, 'green', 'on_white', attrs=['reverse'])
+
+        print(self.title)
+
         print("-" * 29)
         for row in self.board:
             print("| " + " | ".join(row) + " |")
             print("-" * 29)
 
+        column_numbers = []
+        [column_numbers.append(str(i+1)) for i in range(self.size[0])]
+        print("| " + " | ".join(column_numbers) + " |")
+        column_bar = (" " * 11) + "Columns" + (" " * 11)
+        cprint(column_bar, 'green', 'on_white', attrs=['reverse'])
+
 
 def play_game(game_board, player_one, player_two):
-    _title = (" " * 10) + "CONNECT-4" + (" " * 10)
-    cprint(_title, 'green', 'on_white', attrs=['reverse'])
+
     title_vs = f"{player_one.name} VS {player_two.name}"
     title_len = (len(title_vs)-1)
     _gap = round((29-title_len)/2)
-    vs_title = (" " * (_gap)) + title_vs + (" " * _gap)
-    print(vs_title)
+    game_board.title = (" " * (_gap)) + title_vs + (" " * _gap)
 
     game_board.print_table()
+    make_turn(game_board)
 
-    headings = []
-    [headings.append(str(i+1)) for i in range(game_board.size[0])]
-    print("| " + " | ".join(headings) + " |")
-    print("-" * 29)
-    column_bar = (" " * 11) + "Columns" + (" " * 11)
-    cprint(column_bar, 'green', 'on_white', attrs=['reverse'])
+
+def player_turn():
+    player_input = input("Please choose a column to add your counter too: \n")
+    return(player_input)
+
+
+def make_turn(game_board):
+    player_input = player_turn()
+
+    for i in range(game_board.size[1]):
+
+        if game_board.board[0][int(player_input)-1] == "x":
+            print("This Column is Full, press enter to try again.")
+            break
+        elif game_board.board[-1-i][int(player_input)-1] == ".":
+            game_board.board[-1-i][int(player_input)-1] = "x"
+            break
+        elif game_board.board[-1-i][int(player_input)-1] == "x":
+            continue
+    print(player_input)
+
+    print(game_board.title)
+    game_board.print_table()
+    make_turn(game_board)
 
 
 def new_game():
