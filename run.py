@@ -64,18 +64,17 @@ def player_turn():
 
 def make_turn(game_board):
     player_input = player_turn()
-    _ctr = "\u25CF"
-
-    for i in range(game_board.size[1]):
-
-        if game_board.board[0][int(player_input)-1] == "\u25CF":
-            print("This Column is Full, press enter to try again.")
-            break
-        elif game_board.board[-1-i][int(player_input)-1] == "\u25CB":
-            game_board.board[-1-i][int(player_input)-1] = colored(_ctr, 'red')
-            break
-        elif game_board.board[-1-i][int(player_input)-1] == "\u25CF":
-            continue
+    _ctr = colored("\u25CF", 'red')
+    
+    while game_board.board[0][int(player_input)-1] == _ctr:
+        player_input = input(f"Column {player_input} is full, try again: \n")
+    else:
+        for i in range(game_board.size[1]):
+            if game_board.board[-1-i][int(player_input)-1] == "\u25CB":
+                game_board.board[-1-i][int(player_input)-1] = _ctr
+                break
+            elif game_board.board[-1-i][int(player_input)-1] == _ctr:
+                continue
 
     game_board.print_table()
     make_turn(game_board)
