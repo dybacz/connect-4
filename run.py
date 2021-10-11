@@ -1,4 +1,4 @@
-from termcolor import cprint
+from termcolor import colored, cprint
 
 
 class Player:
@@ -22,7 +22,8 @@ class Board:
     def __init__(self, game_type, size, _vs):
         self.game_type = game_type
         self.size = size
-        self.board = [["." for x in range(size[0])] for y in range(size[1])]
+        o_ctr = "\u25CB"
+        self.board = [[o_ctr for x in range(size[0])] for y in range(size[1])]
         self.title = str
         self._vs = _vs
         self.turns = []
@@ -63,20 +64,19 @@ def player_turn():
 
 def make_turn(game_board):
     player_input = player_turn()
+    _ctr = "\u25CF"
 
     for i in range(game_board.size[1]):
 
-        if game_board.board[0][int(player_input)-1] == "x":
+        if game_board.board[0][int(player_input)-1] == "\u25CF":
             print("This Column is Full, press enter to try again.")
             break
-        elif game_board.board[-1-i][int(player_input)-1] == ".":
-            game_board.board[-1-i][int(player_input)-1] = "x"
+        elif game_board.board[-1-i][int(player_input)-1] == "\u25CB":
+            game_board.board[-1-i][int(player_input)-1] = colored(_ctr, 'red')
             break
-        elif game_board.board[-1-i][int(player_input)-1] == "x":
+        elif game_board.board[-1-i][int(player_input)-1] == "\u25CF":
             continue
-    print(player_input)
 
-    print(game_board.title)
     game_board.print_table()
     make_turn(game_board)
 
