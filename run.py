@@ -58,14 +58,14 @@ def play_game(game_board, player_one, player_two):
 
 
 def player_turn():
-    player_input = input("Please choose a column to add your counter too: \n")
+    player_input = input("Input a column to drop your counter:")
     return(player_input)
 
 
 def make_turn(game_board):
     player_input = player_turn()
     _ctr = colored("\u25CF", 'red')
-    
+
     while game_board.board[0][int(player_input)-1] == _ctr:
         player_input = input(f"Column {player_input} is full, try again: \n")
     else:
