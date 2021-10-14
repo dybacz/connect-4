@@ -1,5 +1,6 @@
 from termcolor import colored, cprint
 from random import randint
+import time
 
 
 class Player:
@@ -59,23 +60,33 @@ def play_game(game_board, player_one, player_two):
 
 
 def first_turn(game_board, player_one, player_two):
-    print("To see who plays first we must flip a coin")
+    print("\nTo see who plays first we flip a coin...\n")
     rand_int = randint(1, 2)
-    player_turn_input = input("Player 1, Input 1 for head and 2 for tails: \n")
+    print(f"Player One: {player_one.name}, choose:")
+    print("1. Heads\n2. Tails")
+    plr_input = input("")
+    print("The coin is flipped...")
+    time.sleep(2)
+    print("...")
+    time.sleep(2)
     if rand_int == 1:
-        print("The coin is heads")
+        print("The coin shows Heads")
     else:
-        print("The coin is tails")
+        print("The coin shows Tails")
 
-    if int(player_turn_input) == rand_int:
-        print("Player 1 you will go first")
+    if int(plr_input) == rand_int:
+        print(f"{player_one.name} you will go first")
         player_one.turn_pos = 1
         player_two.turn_pos = 2
+        time.sleep(2)
+        game_board.print_table()
     else:
-        print("Player 2 you will go first")
+        print(f"{player_two.name} go first")
         player_one.turn_pos = 2
         player_two.turn_pos = 1
-    game_board.print_table()
+        if player_two.type == "player":
+            time.sleep(2)
+            game_board.print_table()
 
 
 def turn_switch(game_board, player_one, player_two):
@@ -98,8 +109,9 @@ def turn_switch(game_board, player_one, player_two):
 
 
 def player_turn(game_board, player):
-    player_input = input("Input a column to drop your counter:\n")
     _ctr = colored("\u25CF", player.color)
+    print(f"{player.name}'s turn ({_ctr} counters)")
+    player_input = input("Input a column to drop your counter:\n")
     while game_board.board[0][int(player_input)-1] != "\u25CB":
         player_input = input(f"Column {player_input} is full, try again: \n")
         continue
@@ -113,9 +125,9 @@ def player_turn(game_board, player):
 
 
 def computer_turn(game_board, player):
-    computer_input = randint(0, 6)
-
     _ctr = colored("\u25CF", player.color)
+    print(f"{player.name}'s turn ({_ctr} counters)")
+    computer_input = randint(0, 6)
 
     while game_board.board[0][computer_input] != "\u25CB":
         computer_input = randint(0, 6)
@@ -318,29 +330,69 @@ def _win(game_board, player):
     new_game()
 
 
+def colour_pick(ctr_color_list, player_names):
+    number_list = []
+    for i in range(len(ctr_color_list)):
+        i += 1
+        number_list.append(str(i) + ".")
+    
+    print(f"\n{player_names[-1]} choose your counter color")
+    for number, color in zip(number_list, ctr_color_list):
+        print(number, color.capitalize())
+
+    number_col = int(input(""))
+    return ctr_color_list[number_col-1]
+
+
 def new_game():
     """
     Starts a new game, collects player name.
     """
     # num_players = input("Enter 1 for Singleplayer or 2 for Multiplayer: \n")
-    num_players = 1
-    print("*" + ("-" * 36) + "*")
-    print("*" + (" " * 4) + "Welcome to Python CONNECT-4!" + (" " * 4) + "*")
-    print("*" + (" " * 4) + "Game type: Classic" + (" " * 14) + "*")
-    print("*" + (" " * 4) + "Board size: Standard" + (" " * 12) + "*")
-    print("*" + (" " * 4) + "Vs: Computer" + (" " * 20) + "*")
-    print("*" + ("-" * 36) + "*")
+    print("*" + ("-" * 54) + "*")
+    print("*"+' _____ _____ _   _ _   _ _____ _____ _____        ___ '+"*")
+    print("*"+'/  __ \  _  | \ | | \ | |  ___/  __ \_   _|      /   |'+"*")
+    print("*"+'| /  \/ | | |  \| |  \| | |__ | /  \/ | |______ / /| |'+"*")
+    print("*"+'| |   | | | | . ` | . ` |  __|| |     | |______/ /_| |'+"*")
+    print("*"+'| \__/\ \_/ / |\  | |\  | |___| \__/\ | |      \___  |'+"*")
+    print("*"+(' \____/\___/\_| \_|_| \_|____/ \____/ \_/          |_/')+"*")
+    print("*" + ("-" * 54) + "*")
+    print("*" + (" " * 13) + "Welcome to Python CONNECT-4!" + (" " * 13) + "*")
+    _xtra = (" " * 5) + "*"
+    print("*"+(" " * 5)+"Code Institute Project 3 - Python Essentials"+_xtra)
+    print("*" + (" " * 15) + "Created by: James Dybacz" + (" " * 15) + "*")
+    print("*" + (" " * 19) + "Copyright 2021 \u00A9" + (" " * 19) + "*")
+    print("*" + ("-" * 54) + "*")
 
-    player_names = []
+    print("Game type:")
+    select_players = input("1. 1P vs AI\n2. 1P vs 2P\n")
+    if select_players == "1":
+        num_players = 1
+    elif select_players == "2":
+        num_players = 2
+
+    ctr_color_list = ["green", "yellow", "blue", "magenta", "cyan"]
+    
+    pl_names = []
     if num_players == 1:
-        player_names.append(input("Please enter your name: \n"))
-        player_names.append("Computer")
+        pl_names.append(input("Player 1 - Please enter your name: \n"))
+        plr_clr = colour_pick(ctr_color_list, pl_names)
+        print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
+        ctr_color_list.remove(plr_clr)
+        player_one = Player(pl_names[0], plr_clr, "player")
+        pl_names.append("Computer")
+        player_two = Player(pl_names[1], "red", "computer")
     elif num_players == 2:
-        player_names.append(input("Player One - Please enter your name: \n"))
-        player_names.append(input("Player Two - Please enter your name: \n"))
-
-    player_one = Player(player_names[0], "red", "player")
-    player_two = Player(player_names[1], "blue", "player")
+        pl_names.append(input("Player 1 - Please enter your name: \n"))
+        plr_clr = colour_pick(ctr_color_list, pl_names)
+        print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
+        ctr_color_list.remove(plr_clr)
+        player_one = Player(pl_names[0], plr_clr, "player")
+        pl_names.append(input("\nPlayer 2 - Please enter your name: \n"))
+        plr_clr = colour_pick(ctr_color_list, pl_names)
+        print(f"{pl_names[1]} selected {plr_clr} "+colored("\u25CF", plr_clr))
+        ctr_color_list.remove(plr_clr)
+        player_two = Player(pl_names[1], plr_clr, "player")
 
     game_board = Board("Classic", [7, 6], "Player")
     play_game(game_board, player_one, player_two)
