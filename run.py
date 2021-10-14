@@ -54,12 +54,11 @@ def play_game(game_board, player_one, player_two):
     _gap = round((29-title_len)/2)
     game_board.title = (" " * (_gap)) + title_vs + (" " * _gap)
 
-    # make_turn(game_board, player_one)
-    first_turn(game_board, player_one, player_two)
+    first_turn(player_one, player_two)
     turn_switch(game_board, player_one, player_two)
 
 
-def first_turn(game_board, player_one, player_two):
+def first_turn(player_one, player_two):
     print("\nTo see who plays first we flip a coin...\n")
     rand_int = randint(1, 2)
     print(f"Player One: {player_one.name}, choose:")
@@ -79,14 +78,12 @@ def first_turn(game_board, player_one, player_two):
         player_one.turn_pos = 1
         player_two.turn_pos = 2
         time.sleep(2)
-        game_board.print_table()
     else:
         print(f"{player_two.name} go first")
         player_one.turn_pos = 2
         player_two.turn_pos = 1
         if player_two.type == "player":
             time.sleep(2)
-            game_board.print_table()
 
 
 def turn_switch(game_board, player_one, player_two):
@@ -111,7 +108,8 @@ def turn_switch(game_board, player_one, player_two):
 def player_turn(game_board, player):
     _ctr = colored("\u25CF", player.color)
     print(f"{player.name}'s turn ({_ctr} counters)")
-    player_input = input("Input a column to drop your counter:\n")
+    print("Choose a column to drop your counter")
+    player_input = input("(Input a value from 1 - 7):\n")
     while game_board.board[0][int(player_input)-1] != "\u25CB":
         player_input = input(f"Column {player_input} is full, try again: \n")
         continue
@@ -125,8 +123,15 @@ def player_turn(game_board, player):
 
 
 def computer_turn(game_board, player):
+    rand_time = randint(1, 2)
     _ctr = colored("\u25CF", player.color)
     print(f"{player.name}'s turn ({_ctr} counters)")
+    print(".")
+    time.sleep(rand_time)
+    print("..")
+    time.sleep(rand_time)
+    print("...")
+    time.sleep(rand_time)
     computer_input = randint(0, 6)
 
     while game_board.board[0][computer_input] != "\u25CB":
@@ -143,11 +148,11 @@ def computer_turn(game_board, player):
 
 def make_turn(game_board, player):
     if player.type == "player":
+        game_board.print_table()
         player_turn(game_board, player)
-        game_board.print_table()
     elif player.type == "computer":
-        computer_turn(game_board, player)
         game_board.print_table()
+        computer_turn(game_board, player)
     # make_turn(game_board, player)
 
 
@@ -322,11 +327,18 @@ def horizontal_check(game_board, _y, _x, _ctr, player):
 
 def _win(game_board, player):
     game_board.print_table()
-    print(f"{player.name} Wins!##\n\n")
-    print("To return to home press Enter")
-    player_input = input(" ")
+    player_wins = f"{player.name} Wins!\n"
+    player_wins_len = len(player_wins)
+    _gap = round((29 - player_wins_len) / 2) + 1
+    win_block = colored("!**CONNECT-4**!", "red", "on_yellow")
+    print("")
+    print((" "*7)+(win_block)+(" "*7))
+    print("")
+    print((" " * _gap) + player_wins + (" " * _gap))
+    print("To play again press Enter")
+    player_input = input("")
     while player_input != "":
-        player_input = input("Press Enter to return home\n")
+        player_input = input("To play again press Enter\n")
     new_game()
 
 
@@ -335,20 +347,44 @@ def colour_pick(ctr_color_list, player_names):
     for i in range(len(ctr_color_list)):
         i += 1
         number_list.append(str(i) + ".")
-    
-    print(f"\n{player_names[-1]} choose your counter color")
+    print(f"\n{player_names[-1]} choose your counter color:")
     for number, color in zip(number_list, ctr_color_list):
         print(number, color.capitalize())
+    while True:
+        try:
+            number_col = int(input(""))
+            while True:
+                if number_col > len(ctr_color_list) or number_col < 1:
+                    print("\nThe number you entered is not in the list.")
+                    print("Try again:\n")
+                    for number, color in zip(number_list, ctr_color_list):
+                        print(number, color.capitalize())
+                    break
+                else:
+                    return ctr_color_list[number_col-1]
+        except ValueError:
+            print("This is not a number.\nChoose a number from the list:\n")
+            for number, color in zip(number_list, ctr_color_list):
+                print(number, color.capitalize())
 
-    number_col = int(input(""))
-    return ctr_color_list[number_col-1]
+
+def how_to():
+    print("\nConnect 4 Rules\n")
+    print("OBJECTIVE:")
+    print("Be the first player to connect 4 of your colored counters in a row")
+    print("(either vertically, horizontally, or diagonally)")
+    print("\nHOW TO PLAY:")
+    print("First, decide who goes first and what color each player will have.")
+    print("Players alternate turns, only one counter can be dropped per turn.")
+    print("On your turn, drop one counter into any of the seven columns.")
+    print("The game ends when there is a 4-in-a-row or a stalemate/draw.")
+    print("The starter of the previous game goes second on the next game.")
+    while input("\nPress enter to go back.\n") != "":
+        input("Press enter to go back.\n")
+    new_game()
 
 
-def new_game():
-    """
-    Starts a new game, collects player name.
-    """
-    # num_players = input("Enter 1 for Singleplayer or 2 for Multiplayer: \n")
+def title_screen():
     print("*" + ("-" * 54) + "*")
     print("*"+' _____ _____ _   _ _   _ _____ _____ _____        ___ '+"*")
     print("*"+'/  __ \  _  | \ | | \ | |  ___/  __ \_   _|      /   |'+"*")
@@ -364,15 +400,38 @@ def new_game():
     print("*" + (" " * 19) + "Copyright 2021 \u00A9" + (" " * 19) + "*")
     print("*" + ("-" * 54) + "*")
 
+
+def new_game():
+    """
+    Starts a new game, collects player name.
+    """
+    title_screen()
     print("Game type:")
-    select_players = input("1. 1P vs AI\n2. 1P vs 2P\n")
-    if select_players == "1":
-        num_players = 1
-    elif select_players == "2":
-        num_players = 2
+    print("1. 1P vs AI\n2. 1P vs 2P\n3. How to play")
+    while True:
+        try:
+            select_players = int(input(""))
+            while True:
+                if select_players > 3 or select_players < 1:
+                    print("That number is not available for selection\n")
+                    print("Please select a Game type (1 - 3)\n")
+                    print("1. 1P vs AI\n2. 1P vs 2P\n3. How to play")
+                    select_players = int(input(""))
+                else:
+                    if select_players == 1:
+                        num_players = 1
+                    elif select_players == 2:
+                        num_players = 2
+                    elif select_players == 3:
+                        how_to()
+                    break
+            break
+        except (ValueError, TypeError):
+            print("That is not a numer\n")
+            print("Please select a Game type using its number (1 - 3)\n")
+            print("1. 1P vs AI\n2. 1P vs 2P\n3. How to play")
 
     ctr_color_list = ["green", "yellow", "blue", "magenta", "cyan"]
-    
     pl_names = []
     if num_players == 1:
         pl_names.append(input("Player 1 - Please enter your name: \n"))
