@@ -8,11 +8,10 @@ class Player:
     (Real or Computer)
     """
 
-    def __init__(self, name, counter_color, player_type, win_count):
+    def __init__(self, name, counter_color, player_type):
         self.name = name
         self.color = counter_color
         self.type = player_type
-        self.count = win_count
 
 
 class Board:
@@ -151,9 +150,63 @@ def check_win(game_board, _y, _x, _ctr, player):
             if game_board.board[_y+i][_x] == _ctr:
                 count += 1
         if count == 3:
-            player.count = 3
+            _win(game_board, player)
+    horizontal_check(game_board, _y, _x, _ctr, player)
+
+    # diagonal check ---x<
+    #                --o-<
+    #                -o--<
+    #                o---<
+    if _x < 4 and _y < -3:
+        count = 0
+        for i in range(1, 4):
+            if game_board.board[_y+i][_x-i] == _ctr:
+                count += 1
+        if count == 3:
             _win(game_board, player)
 
+    # diagonal check ---o<
+    #                --x-<
+    #                -o--<
+    #                o---<
+    if 1 < _x < 6 and -6 < _y < -2:
+        count = 0
+        if game_board.board[_y-1][_x+1] == _ctr:
+            count = 1
+        for i in range(1, 3):
+            if game_board.board[_y+i][_x-i] == _ctr:
+                count += 1
+        if count == 3:
+            _win(game_board, player)
+
+    # diagonal check ---o<
+    #                --o-<
+    #           ^^   -x--<
+    #                o---<
+    if 0 < _x < 5 and -5 < _y < -1:
+        count = 0
+        if game_board.board[_y+1][_x-1] == _ctr:
+            count = 1
+        for i in range(1, 3):
+            if game_board.board[_y-i][_x+i] == _ctr:
+                count += 1
+        if count == 3:
+            _win(game_board, player)
+
+    # diagonal check ---o<
+    #                --o-<
+    #           ^^   -o--<
+    #                x---<
+    if _x < 4 and _y > -4:
+        count = 0
+        for i in range(1, 4):
+            if game_board.board[_y-i][_x+i] == _ctr:
+                count += 1
+        if count == 3:
+            _win(game_board, player)
+
+
+def horizontal_check(game_board, _y, _x, _ctr, player):
     # horizontal check X--->
     if _x < 4:
         count = 0
@@ -162,7 +215,6 @@ def check_win(game_board, _y, _x, _ctr, player):
                 count += 1
 
         if count == 3:
-            player.count = 3
             _win(game_board, player)
 
     # horizontal check -X-->
@@ -173,20 +225,16 @@ def check_win(game_board, _y, _x, _ctr, player):
         for i in range(1, 3):
             if game_board.board[_y][_x+i] == _ctr:
                 count += 1
-
         if count == 3:
-            player.count = 3
             _win(game_board, player)
-    
+
     # horizontal check <---X
     if _x > 2:
         count = 0
         for i in range(1, 4):
             if game_board.board[_y][_x-i] == _ctr:
                 count += 1
-                
         if count == 3:
-            player.count = 3
             _win(game_board, player)
 
     # horizontal check <--x-
@@ -198,9 +246,7 @@ def check_win(game_board, _y, _x, _ctr, player):
             if game_board.board[_y][_x-i] == _ctr:
                 count += 1
                 print(count)
-
         if count == 3:
-            player.count = 3
             _win(game_board, player)
 
 
@@ -211,8 +257,7 @@ def _win(game_board, player):
     player_input = input(" ")
     while player_input != "":
         player_input = input("Press Enter to return home\n")
-    else:
-        new_game()
+    new_game()
 
 
 def new_game():
@@ -236,8 +281,8 @@ def new_game():
         player_names.append(input("Player One - Please enter your name: \n"))
         player_names.append(input("Player Two - Please enter your name: \n"))
 
-    player_one = Player(player_names[0], "red", "player", 0)
-    player_two = Player(player_names[1], "blue", "player", 0)
+    player_one = Player(player_names[0], "red", "player")
+    player_two = Player(player_names[1], "blue", "player")
 
     game_board = Board("Classic", [7, 6], "Player")
     play_game(game_board, player_one, player_two)
