@@ -152,7 +152,11 @@ def check_win(game_board, _y, _x, _ctr, player):
         if count == 3:
             _win(game_board, player)
     horizontal_check(game_board, _y, _x, _ctr, player)
+    right_diagonal_check(game_board, _y, _x, _ctr, player)
+    left_diagonal_check(game_board, _y, _x, _ctr, player)
 
+
+def right_diagonal_check(game_board, _y, _x, _ctr, player):
     # diagonal check ---x<
     #                --o-<
     #                -o--<
@@ -201,6 +205,60 @@ def check_win(game_board, _y, _x, _ctr, player):
         count = 0
         for i in range(1, 4):
             if game_board.board[_y-i][_x+i] == _ctr:
+                count += 1
+        if count == 3:
+            _win(game_board, player)
+
+
+def left_diagonal_check(game_board, _y, _x, _ctr, player):
+    # diagonal check x---<
+    #                -o--<
+    #                --o-<
+    #                ---o<
+    if _x < 4 and _y < -3:
+        count = 0
+        for i in range(1, 4):
+            if game_board.board[_y+i][_x+i] == _ctr:
+                count += 1
+        if count == 3:
+            _win(game_board, player)
+
+    # diagonal check o---<
+    #                -x--<
+    #                --o-<
+    #                ---o<
+    if 0 < _x < 5 and -6 < _y < -2:
+        count = 0
+        if game_board.board[_y-1][_x-1] == _ctr:
+            count = 1
+        for i in range(1, 3):
+            if game_board.board[_y+i][_x+i] == _ctr:
+                count += 1
+        if count == 3:
+            _win(game_board, player)
+
+    # diagonal check o---<
+    #                -o--<
+    #             ^^ --x-<
+    #                ---o<
+    if 1 < _x < 6 and -5 < _y < -1:
+        count = 0
+        if game_board.board[_y+1][_x+1] == _ctr:
+            count = 1
+        for i in range(1, 3):
+            if game_board.board[_y-i][_x-i] == _ctr:
+                count += 1
+        if count == 3:
+            _win(game_board, player)
+
+    # diagonal check o---<
+    #                -o--<
+    #             ^^ --o-<
+    #                ---x<
+    if _x > 2 and _y > -4:
+        count = 0
+        for i in range(1, 4):
+            if game_board.board[_y-i][_x-i] == _ctr:
                 count += 1
         if count == 3:
             _win(game_board, player)
