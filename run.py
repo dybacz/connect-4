@@ -434,7 +434,11 @@ def new_game():
     ctr_color_list = ["green", "yellow", "blue", "magenta", "cyan"]
     pl_names = []
     if num_players == 1:
-        pl_names.append(input("Player 1 - Please enter your name: \n"))
+        input_one = input("Player 1 - Please enter your name: \n")
+        while len(input_one) > 10:
+            print("Name too long - Please try a shorter name:")
+            input_one = input("")
+        pl_names.append(input_one)
         plr_clr = colour_pick(ctr_color_list, pl_names)
         print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
         ctr_color_list.remove(plr_clr)
@@ -442,12 +446,20 @@ def new_game():
         pl_names.append("Computer")
         player_two = Player(pl_names[1], "red", "computer")
     elif num_players == 2:
-        pl_names.append(input("Player 1 - Please enter your name: \n"))
+        input_one = input("Player 1 - Please enter your name: \n")
+        while len(input_one) > 10:
+            print("Name too long - Please try a shorter name:")
+            input_one = input("")
+        pl_names.append(input_one)
         plr_clr = colour_pick(ctr_color_list, pl_names)
         print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
         ctr_color_list.remove(plr_clr)
         player_one = Player(pl_names[0], plr_clr, "player")
-        pl_names.append(input("\nPlayer 2 - Please enter your name: \n"))
+        input_two = input("\nPlayer 2 - Please enter your name: \n")
+        while len(input_two) > 10:
+            print("Name too long - Please try a shorter name:")
+            input_two = input("")
+        pl_names.append(input_two)
         plr_clr = colour_pick(ctr_color_list, pl_names)
         print(f"{pl_names[1]} selected {plr_clr} "+colored("\u25CF", plr_clr))
         ctr_color_list.remove(plr_clr)
