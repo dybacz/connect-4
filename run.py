@@ -8,10 +8,11 @@ class Player:
     (Real or Computer)
     """
 
-    def __init__(self, name, counter_color, player_type, turn_pos):
+    def __init__(self, name, counter_color, player_type, win_count):
         self.name = name
         self.color = counter_color
         self.type = player_type
+        self.count = win_count
 
 
 class Board:
@@ -55,6 +56,7 @@ def play_game(game_board, player_one, player_two):
 
     # make_turn(game_board, player_one)
     first_turn(game_board, player_one, player_two)
+    turn_switch(game_board, player_one, player_two)
 
 
 def first_turn(game_board, player_one, player_two):
@@ -70,41 +72,35 @@ def first_turn(game_board, player_one, player_two):
         print("Player 1 you will go first")
         player_one.turn_pos = 1
         player_two.turn_pos = 2
-        make_turn(game_board, player_one)
     else:
         print("Player 2 you will go first")
         player_one.turn_pos = 2
         player_two.turn_pos = 1
-        make_turn(game_board, player_two)
-
-    turn_switch(game_board, player_one, player_two)
+    game_board.print_table()
 
 
 def turn_switch(game_board, player_one, player_two):
-    for i in range(int(game_board.size[0]*game_board.size[1])-1):
-        print(range(int(game_board.size[0]*game_board.size[1])))
-        print(i)
+    for i in range(int(game_board.size[0]*game_board.size[1])):
         while player_one.turn_pos == 2:
-            make_turn(game_board, player_one)
+            make_turn(game_board, player_two)
             player_one.turn_pos = 1
             player_two.turn_pos = 2
             i += 1
             break
         else:
             while player_two.turn_pos == 2:
-                make_turn(game_board, player_two)
+                make_turn(game_board, player_one)
                 player_one.turn_pos = 2
                 player_two.turn_pos = 1
                 i += 1
                 break
+    game_board.print_table()
     print("Draw")
 
 
 def player_turn(game_board, player):
     player_input = input("Input a column to drop your counter:\n")
-
     _ctr = colored("\u25CF", player.color)
-
     while game_board.board[0][int(player_input)-1] != "\u25CB":
         player_input = input(f"Column {player_input} is full, try again: \n")
         continue
@@ -114,8 +110,7 @@ def player_turn(game_board, player):
         else:
             game_board.board[-1-i][int(player_input)-1] = _ctr
             break
-    # check for in condition
-    game_board.print_table()
+    check_win(game_board, -1-i, int(player_input)-1, _ctr, player)
 
 
 def computer_turn(game_board, player):
@@ -132,18 +127,67 @@ def computer_turn(game_board, player):
         else:
             game_board.board[-1-i][computer_input] = _ctr
             break
-    # check for win conditions
-    game_board.print_table()
+    check_win(game_board, -1-i, computer_input, _ctr, player)
 
 
 def make_turn(game_board, player):
-    game_board.print_table()
     if player.type == "player":
         player_turn(game_board, player)
+        game_board.print_table()
     elif player.type == "computer":
         computer_turn(game_board, player)
-
+        game_board.print_table()
     # make_turn(game_board, player)
+
+
+def check_win(game_board, _y, _x, _ctr, player):
+    """
+    y (-1 to -6) bottom of array to top, x 0 to 6)
+    """
+    # vertical check (down only)
+    if _y < -3:
+        count = 0
+        for i in range(1, 4):
+            if game_board.board[_y+i][_x] == _ctr:
+                count += 1
+        if count == 3:
+            player.count = 3
+            _win(game_board, player)
+
+    # horizontal check X--->
+    if _x < 4:
+        count = 0
+        for i in range(1, 4):
+            if game_board.board[_y][_x+i] == _ctr:
+                count += 1
+                print(count)
+
+        if count == 3:
+            player.count = 3
+            _win(game_board, player)
+    
+    # horizontal check <---X
+    if _x > 2:
+        count = 0
+        for i in range(1, 4):
+            if game_board.board[_y][_x-i] == _ctr:
+                count += 1
+                print(count)
+                
+        if count == 3:
+            player.count = 3
+            _win(game_board, player)
+
+
+def _win(game_board, player):
+    game_board.print_table()
+    print(f"{player.name} Wins!##\n\n")
+    print("To return to home press Enter")
+    player_input = input(" ")
+    while player_input != "":
+        player_input = input("Press Enter to return home\n")
+    else:
+        new_game()
 
 
 def new_game():
@@ -168,7 +212,7 @@ def new_game():
         player_names.append(input("Player Two - Please enter your name: \n"))
 
     player_one = Player(player_names[0], "red", "player", 0)
-    player_two = Player(player_names[1], "blue", "computer", 0)
+    player_two = Player(player_names[1], "blue", "player", 0)
 
     game_board = Board("Classic", [7, 6], "Player")
     play_game(game_board, player_one, player_two)
