@@ -160,7 +160,19 @@ def check_win(game_board, _y, _x, _ctr, player):
         for i in range(1, 4):
             if game_board.board[_y][_x+i] == _ctr:
                 count += 1
-                print(count)
+
+        if count == 3:
+            player.count = 3
+            _win(game_board, player)
+
+    # horizontal check -X-->
+    if 0 < _x < 5:
+        count = 0
+        if game_board.board[_y][_x-1] == _ctr:
+            count = 1
+        for i in range(1, 3):
+            if game_board.board[_y][_x+i] == _ctr:
+                count += 1
 
         if count == 3:
             player.count = 3
@@ -172,8 +184,21 @@ def check_win(game_board, _y, _x, _ctr, player):
         for i in range(1, 4):
             if game_board.board[_y][_x-i] == _ctr:
                 count += 1
-                print(count)
                 
+        if count == 3:
+            player.count = 3
+            _win(game_board, player)
+
+    # horizontal check <--x-
+    if 1 < _x < 6:
+        count = 0
+        if game_board.board[_y][_x+1] == _ctr:
+            count = 1
+        for i in range(1, 3):
+            if game_board.board[_y][_x-i] == _ctr:
+                count += 1
+                print(count)
+
         if count == 3:
             player.count = 3
             _win(game_board, player)
