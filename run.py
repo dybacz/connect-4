@@ -1,4 +1,5 @@
 from termcolor import colored, cprint
+from random import randint
 
 
 class Player:
@@ -39,8 +40,7 @@ class Board:
             print("| " + " | ".join(row) + " |")
             print("-" * 29)
 
-        column_numbers = []
-        [column_numbers.append(str(i+1)) for i in range(self.size[0])]
+        column_numbers = [(str(i+1)) for i in range(self.size[0])]
         print("| " + " | ".join(column_numbers) + " |")
         column_bar = (" " * 11) + "Columns" + (" " * 11)
         cprint(column_bar, 'green', 'on_white', attrs=['reverse'])
@@ -53,8 +53,25 @@ def play_game(game_board, player_one, player_two):
     _gap = round((29-title_len)/2)
     game_board.title = (" " * (_gap)) + title_vs + (" " * _gap)
 
-    game_board.print_table()
-    make_turn(game_board)
+    # make_turn(game_board, player_one)
+    first_turn(game_board, player_one, player_two)
+
+
+def first_turn(game_board, player_one, player_two):
+    print("To see who plays first we must flip a coin")
+    rand_int = randint(1, 2)
+    player_turn_input = input("Player 1, Input 1 for head and 2 for tails: \n")
+    if rand_int == 1:
+        print("The coin is heads")
+    else:
+        print("The coin is tails")
+
+    if int(player_turn_input) == rand_int:
+        print("Player 1 you will go first")
+        make_turn(game_board, player_one)
+    else:
+        print("Player 2 you will go first")
+        make_turn(game_board, player_two)
 
 
 def player_turn():
@@ -62,9 +79,10 @@ def player_turn():
     return(player_input)
 
 
-def make_turn(game_board):
+def make_turn(game_board, player):
+    game_board.print_table()
     player_input = player_turn()
-    _ctr = colored("\u25CF", 'red')
+    _ctr = colored("\u25CF", player.color)
 
     while game_board.board[0][int(player_input)-1] == _ctr:
         player_input = input(f"Column {player_input} is full, try again: \n")
@@ -75,9 +93,7 @@ def make_turn(game_board):
                 break
             elif game_board.board[-1-i][int(player_input)-1] == _ctr:
                 continue
-
-    game_board.print_table()
-    make_turn(game_board)
+    make_turn(game_board, player)
 
 
 def new_game():
@@ -101,8 +117,8 @@ def new_game():
         player_names.append(input("Player One - Please enter your name: \n"))
         player_names.append(input("Player Two - Please enter your name: \n"))
 
-    player_one = Player(player_names[0], "blue", "player")
-    player_two = Player(player_names[1], "red", "player")
+    player_one = Player(player_names[0], "red", "player")
+    player_two = Player(player_names[1], "blue", "player")
 
     game_board = Board("Classic", [7, 6], "Player")
     play_game(game_board, player_one, player_two)
