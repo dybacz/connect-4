@@ -8,7 +8,7 @@ class Player:
     (Real or Computer)
     """
 
-    def __init__(self, name, counter_color, player_type):
+    def __init__(self, name, counter_color, player_type, turn_pos):
         self.name = name
         self.color = counter_color
         self.type = player_type
@@ -68,10 +68,36 @@ def first_turn(game_board, player_one, player_two):
 
     if int(player_turn_input) == rand_int:
         print("Player 1 you will go first")
+        player_one.turn_pos = 1
+        player_two.turn_pos = 2
         make_turn(game_board, player_one)
     else:
         print("Player 2 you will go first")
+        player_one.turn_pos = 2
+        player_two.turn_pos = 1
         make_turn(game_board, player_two)
+
+    turn_switch(game_board, player_one, player_two)
+
+
+def turn_switch(game_board, player_one, player_two):
+    for i in range(int(game_board.size[0]*game_board.size[1])-1):
+        print(range(int(game_board.size[0]*game_board.size[1])))
+        print(i)
+        while player_one.turn_pos == 2:
+            make_turn(game_board, player_one)
+            player_one.turn_pos = 1
+            player_two.turn_pos = 2
+            i += 1
+            break
+        else:
+            while player_two.turn_pos == 2:
+                make_turn(game_board, player_two)
+                player_one.turn_pos = 2
+                player_two.turn_pos = 1
+                i += 1
+                break
+    print("Draw")
 
 
 def player_turn(game_board, player):
@@ -88,21 +114,26 @@ def player_turn(game_board, player):
         else:
             game_board.board[-1-i][int(player_input)-1] = _ctr
             break
+    # check for in condition
+    game_board.print_table()
 
 
 def computer_turn(game_board, player):
-    computer_input = randint(1, 7)
+    computer_input = randint(0, 6)
 
     _ctr = colored("\u25CF", player.color)
 
-    while game_board.board[0][computer_input-1] != "\u25CB":
-        break
+    while game_board.board[0][computer_input] != "\u25CB":
+        computer_input = randint(0, 6)
+        continue
     for i in range(game_board.size[1]):
-        while game_board.board[-1-i][computer_input-1] != "\u25CB":
+        while game_board.board[-1-i][computer_input] != "\u25CB":
             break
         else:
-            game_board.board[-1-i][computer_input-1] = _ctr
+            game_board.board[-1-i][computer_input] = _ctr
             break
+    # check for win conditions
+    game_board.print_table()
 
 
 def make_turn(game_board, player):
@@ -112,7 +143,7 @@ def make_turn(game_board, player):
     elif player.type == "computer":
         computer_turn(game_board, player)
 
-    make_turn(game_board, player)
+    # make_turn(game_board, player)
 
 
 def new_game():
@@ -136,8 +167,8 @@ def new_game():
         player_names.append(input("Player One - Please enter your name: \n"))
         player_names.append(input("Player Two - Please enter your name: \n"))
 
-    player_one = Player(player_names[0], "red", "player")
-    player_two = Player(player_names[1], "blue", "player")
+    player_one = Player(player_names[0], "red", "player", 0)
+    player_two = Player(player_names[1], "blue", "computer", 0)
 
     game_board = Board("Classic", [7, 6], "Player")
     play_game(game_board, player_one, player_two)
