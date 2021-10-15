@@ -5,7 +5,7 @@ import time
 
 class Player:
     """
-    Player class, Creates player, sets player name, counter colour, player type
+    Player class, Creates player, sets player name, counter color, player type
     (Real or Computer)
     """
 
@@ -17,18 +17,16 @@ class Player:
 
 class Board:
     """
-    Main Board Class, Sets the game type, board size ,vs?
+    Main Board Class, Sets the game type, board size.
     Has methods for printing the board, adding player turns.
     """
 
-    def __init__(self, game_type, size, _vs):
+    def __init__(self, game_type, size):
         self.game_type = game_type
         self.size = size
         o_ctr = "\u25CB"
         self.board = [[o_ctr for x in range(size[0])] for y in range(size[1])]
         self.title = str
-        self._vs = _vs
-        self.turns = []
 
     def print_table(self):
         _title = (" " * 10) + "CONNECT-4" + (" " * 10)
@@ -69,7 +67,6 @@ def first_turn(player_one, player_two):
     random integer 0 or 1.
     Input from user is validated within a range of 2 [1, 2] and passed
     through exception handeling for ValueError check
-    
     Initial player turn position generated and stored in each players
     class object as player.turn_pos
     """
@@ -114,6 +111,11 @@ def first_turn(player_one, player_two):
 
 
 def turn_switch(game_board, player_one, player_two):
+    """
+    calculates amount of turns left from gameboard size, starts game.
+    loops through turns, changing turn_pos of each player after every turn.
+    Draw condition met if all turns are completed and no win condition met.
+    """
     for i in range(int(game_board.size[0]*game_board.size[1])):
         while player_one.turn_pos == 2:
             make_turn(game_board, player_two)
@@ -130,9 +132,24 @@ def turn_switch(game_board, player_one, player_two):
                 break
     game_board.print_table()
     print("Draw")
+    print("To play again press Enter")
+    player_input = input("")
+    while player_input != "":
+        player_input = input("To play again press Enter\n")
+    new_game()
 
 
 def player_turn(game_brd, player):
+    """
+    Initiates player turn, sets color of counter from color variable in
+    each players class.
+    Takes player input for column. This input is validated in the range 1-7
+    -1 is subtracted from this value to give true array index values.
+    Exception handleing is done on input to make sure no ValueErrors occur.
+    Once data is validated, loop though column is used until next empty place
+    players colored counter is added to that empty place.
+    Full columns are also handled in this function.
+    """
     _ctr = colored("\u25CF", player.color)
     print(f"{player.name}'s turn ({_ctr} counters)")
     print("Choose a column number to drop your counter")
@@ -167,6 +184,13 @@ def player_turn(game_brd, player):
 
 
 def computer_turn(game_board, player):
+    """
+    Similar to player_turn but no need for validating or exception handleing
+    Column is selected from random integer generated between 0 - 6
+    (true array index values)
+    time.sleep used to give the effect of artificial thinking.
+    Full columns are also handled in this function.
+    """
     rand_time = randint(1, 2)
     _ctr = colored("\u25CF", player.color)
     print(f"{player.name}'s turn ({_ctr} counters)")
@@ -191,17 +215,22 @@ def computer_turn(game_board, player):
 
 
 def make_turn(game_board, player):
+    """
+    function used to determine which turn function should be used.
+    Also prints game board before each turn.
+    """
     if player.type == "player":
         game_board.print_table()
         player_turn(game_board, player)
     elif player.type == "computer":
         game_board.print_table()
         computer_turn(game_board, player)
-    # make_turn(game_board, player)
 
 
 def check_win(game_board, _y, _x, _ctr, player):
     """
+    Holds all functions used for checking win conditions are met
+    vertical has a single downwards.
     y (-1 to -6) bottom of array to top, x 0 to 6)
     """
     # vertical check (down only)
@@ -212,17 +241,23 @@ def check_win(game_board, _y, _x, _ctr, player):
                 count += 1
         if count == 3:
             _win(game_board, player)
+
     horizontal_check(game_board, _y, _x, _ctr, player)
     right_diagonal_check(game_board, _y, _x, _ctr, player)
     left_diagonal_check(game_board, _y, _x, _ctr, player)
 
 
 def right_diagonal_check(game_board, _y, _x, _ctr, player):
+    """
+    Function for checking right pointing diagonal win conditions (4 in total)
+    each check has diagram with X being the the counter last placed
+    and o being the counters that are checked relative to x.
+    """
     # diagonal check ---x<
     #                --o-<
     #                -o--<
     #                o---<
-    if _x < 4 and _y < -3:
+    if _x > 2 and _y < -3:
         count = 0
         for i in range(1, 4):
             if game_board.board[_y+i][_x-i] == _ctr:
@@ -272,6 +307,11 @@ def right_diagonal_check(game_board, _y, _x, _ctr, player):
 
 
 def left_diagonal_check(game_board, _y, _x, _ctr, player):
+    """
+    Function for checking left pointing diagonal win conditions (4 in total)
+    each check has diagram with X being the the counter last placed
+    and o being the counters that are checked relative to x.
+    """
     # diagonal check x---<
     #                -o--<
     #                --o-<
@@ -326,6 +366,11 @@ def left_diagonal_check(game_board, _y, _x, _ctr, player):
 
 
 def horizontal_check(game_board, _y, _x, _ctr, player):
+    """
+    Function for horizontal win conditions (4 in total)
+    each check has diagram with X being the the counter last placed
+    and o being the counters that are checked relative to x.
+    """
     # horizontal check X--->
     if _x < 4:
         count = 0
@@ -364,12 +409,16 @@ def horizontal_check(game_board, _y, _x, _ctr, player):
         for i in range(1, 3):
             if game_board.board[_y][_x-i] == _ctr:
                 count += 1
-                print(count)
         if count == 3:
             _win(game_board, player)
 
 
 def _win(game_board, player):
+    """
+    Win function. Called when a win condition is met.
+    Generates UI to show user who has won.
+    User must then press enter to continue to new game.
+    """
     game_board.print_table()
     player_wins = f"{player.name} Wins!\n"
     player_wins_len = len(player_wins)
@@ -386,7 +435,17 @@ def _win(game_board, player):
     new_game()
 
 
-def colour_pick(ctr_color_list, player_names):
+def color_pick(ctr_color_list, player_names):
+    """
+    Funtion allowing players to select the color of their counter.
+    Number list generated and zip with colors.
+    Player selects a color, index of color is returned and
+    added to player class upon class initiation.
+    input is put through exception handeling fot Value error
+    and validated against length of colors list.
+    Once a color has been selected it is removed from the list
+    so color clashes cannot occur.
+    """
     number_list = []
     for i in range(len(ctr_color_list)):
         i += 1
@@ -413,6 +472,10 @@ def colour_pick(ctr_color_list, player_names):
 
 
 def how_to():
+    """
+    Prints a page of game instructions.
+    player must only press enter to return to game menu.
+    """
     print("\nConnect 4 Rules\n")
     print("OBJECTIVE:")
     print("Be the first player to connect 4 of your colored counters in a row")
@@ -429,6 +492,9 @@ def how_to():
 
 
 def title_screen():
+    """
+    Prints Game ASCII Title
+    """
     print("*" + ("-" * 54) + "*")
     print("*"+' _____ _____ _   _ _   _ _____ _____ _____        ___ '+"*")
     print("*"+'/  __ \  _  | \ | | \ | |  ___/  __ \_   _|      /   |'+"*")
@@ -447,7 +513,12 @@ def title_screen():
 
 def new_game():
     """
-    Starts a new game, collects player name.
+    Starts a new game, requests game type. input is validated and put through
+    exception handeling so a ValueError does not occur.
+    Board class initialised with game type and size.
+    Player class initialised with name, counter color and player type(player
+    or computer).
+    Once initialised game is started with play_game function.
     """
     title_screen()
     print("Game type:")
@@ -483,7 +554,7 @@ def new_game():
             print("Name too long - Please try a shorter name:")
             input_one = input("")
         pl_names.append(input_one)
-        plr_clr = colour_pick(ctr_color_list, pl_names)
+        plr_clr = color_pick(ctr_color_list, pl_names)
         print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
         ctr_color_list.remove(plr_clr)
         player_one = Player(pl_names[0], plr_clr, "player")
@@ -495,7 +566,7 @@ def new_game():
             print("Name too long - Please try a shorter name:")
             input_one = input("")
         pl_names.append(input_one)
-        plr_clr = colour_pick(ctr_color_list, pl_names)
+        plr_clr = color_pick(ctr_color_list, pl_names)
         print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
         ctr_color_list.remove(plr_clr)
         player_one = Player(pl_names[0], plr_clr, "player")
@@ -504,12 +575,12 @@ def new_game():
             print("Name too long - Please try a shorter name:")
             input_two = input("")
         pl_names.append(input_two)
-        plr_clr = colour_pick(ctr_color_list, pl_names)
+        plr_clr = color_pick(ctr_color_list, pl_names)
         print(f"{pl_names[1]} selected {plr_clr} "+colored("\u25CF", plr_clr))
         ctr_color_list.remove(plr_clr)
         player_two = Player(pl_names[1], plr_clr, "player")
 
-    game_board = Board("Classic", [7, 6], "Player")
+    game_board = Board("Classic", [7, 6])
     play_game(game_board, player_one, player_two)
 
 
