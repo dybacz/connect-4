@@ -105,29 +105,39 @@ def turn_switch(game_board, player_one, player_two):
     print("Draw")
 
 
-def player_turn(game_board, player):
+def player_turn(game_brd, player):
     _ctr = colored("\u25CF", player.color)
     print(f"{player.name}'s turn ({_ctr} counters)")
     print("Choose a column number to drop your counter")
     while True:
         try:
-            player_input = int(input("(Input a value from 1 - 7):\n"))
-            while game_board.board[0][player_input-1] != "\u25CB":
-                print(f"Column {player_input} is full, try again:")
-                player_input = int(input(""))
-                continue
-            for i in range(game_board.size[1]):
-                while game_board.board[-1-i][player_input-1] != "\u25CB":
-                    break
+            player_inpt = int(input("(Input a value from 1 - 7):\n"))
+            while True:
+                if player_inpt > 7 or player_inpt < 1:
+                    print(f"Column {player_inpt} does not exist.")
+                    print("Choose a different column to drop your counter in")
+                    player_inpt = int(input("(Input a value from 1 - 7):\n"))
                 else:
-                    game_board.board[-1-i][player_input-1] = _ctr
+                    while game_brd.brd[0][player_inpt-1] != "\u25CB":
+                        print(f"Column {player_inpt} is full, try again:")
+                        player_inpt = int(input(""))
+                        continue
+                    for i in range(game_brd.size[1]):
+                        while game_brd.board[-1-i][player_inpt-1] != "\u25CB":
+                            break
+                        else:
+                            game_brd.board[-1-i][player_inpt-1] = _ctr
+                            break
+                    check_win(game_brd, -1-i, int(player_inpt)-1, _ctr, player)
                     break
             break
         except ValueError:
             print("This is not a number.")
             print("Choose a column number to drop your counter")
-    check_win(game_board, -1-i, int(player_input)-1, _ctr, player)
-
+        except IndexError:
+            print("This is not a column.")
+            print("Choose a column number to drop your counter")
+  
 
 def computer_turn(game_board, player):
     rand_time = randint(1, 2)
