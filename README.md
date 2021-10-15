@@ -13,6 +13,10 @@ Or if that gets too easy, players can play against each other!
 #### Objective:
 * Be the first player to connect 4 of your colored counters in a row, either vertically, horizontally, or diagonally.
 
+![Player 1 Wins](assets/images/readme/player_wins.png)
+![Computer Wins](assets/images/readme/computer_wins.png)
+![Player 2 Wins](assets/images/readme/player_two_wins.png)
+
 #### How to play:
 * First, decide what color each player will be then decide who goes first through a random coin toss.
 * Players alternate turns, only one counter can be used per turn.
@@ -41,13 +45,15 @@ Or if that gets too easy, players can play against each other!
 * Input validation and error checking
     * You cannot input a number that does not exist in the menus
     * You must enter numbers
-    ![Wrong Input](assets/images/readme/wrong_input.png)
 
-    * You cannot choose outside the range of columns
-    ![Wrong Column](assets/images/readme/wrong_column.png)
-    * You cannot put two counters in the same spot
-    * You cannot add to a full column
-    ![Full column](assets/images/readme/full_column.png)
+![Wrong Input](assets/images/readme/wrong_input.png)
+* You cannot choose outside the range of columns
+
+![Wrong Column](assets/images/readme/wrong_column.png)
+* You cannot put two counters in the same spot
+* You cannot add to a full column
+
+![Full column](assets/images/readme/full_column.png)
 
 * Data is maintained in the class instances
     * Counter location is stored in Board class

@@ -107,7 +107,6 @@ def first_turn(player_one, player_two):
         except ValueError:
             print("\nThis is not a number.")
             print("Choose a number from the list:")
-            print("\n1. Heads\n2. Tails")
 
 
 def turn_switch(game_board, player_one, player_two):
@@ -530,7 +529,7 @@ def new_game():
                 if select_players > 3 or select_players < 1:
                     print("That number is not available for selection\n")
                     print("Please select a Game type (1 - 3)\n")
-                    print("1. 1P vs AI\n2. 1P vs 2P\n3. How to play")
+                    print("1. 1P vs CPU\n2. 1P vs 2P\n3. How to play")
                     select_players = int(input("\n"))
                 else:
                     if select_players == 1:
@@ -544,14 +543,14 @@ def new_game():
         except (ValueError, TypeError):
             print("That is not a number\n")
             print("Please select a Game type using its number (1 - 3)\n")
-            print("1. 1P vs AI\n2. 1P vs 2P\n3. How to play")
+            print("1. 1P vs CPU\n2. 1P vs 2P\n3. How to play")
 
     ctr_color_list = ["green", "yellow", "blue", "magenta", "cyan"]
     pl_names = []
     if num_players == 1:
         input_one = input("Player 1 - Please enter your name: \n")
-        while len(input_one) > 10:
-            print("Name too long - Please try a shorter name:")
+        while len(input_one) > 10 or len(input_one) < 1:
+            print("Name not valid - Please try a differnt name:")
             input_one = input("\n")
         pl_names.append(input_one.capitalize())
         plr_clr = color_pick(ctr_color_list, pl_names)
@@ -562,8 +561,8 @@ def new_game():
         player_two = Player(pl_names[1], "red", "computer")
     elif num_players == 2:
         input_one = input("Player 1 - Please enter your name: \n")
-        while len(input_one) > 10:
-            print("Name too long - Please try a shorter name:")
+        while len(input_one) > 10 or len(input_one) < 1:
+            print("Name not valid - Please try a differnt name:")
             input_one = input("\n")
         pl_names.append(input_one.capitalize())
         plr_clr = color_pick(ctr_color_list, pl_names)
@@ -571,8 +570,8 @@ def new_game():
         ctr_color_list.remove(plr_clr)
         player_one = Player(pl_names[0], plr_clr, "player")
         input_two = input("\nPlayer 2 - Please enter your name: \n")
-        while len(input_two) > 10:
-            print("Name too long - Please try a shorter name:")
+        while len(input_two) > 10 or len(input_two) < 1:
+            print("Name not valid - Please try a differnt name:")
             input_two = input("\n")
         pl_names.append(input_two.capitalize())
         plr_clr = color_pick(ctr_color_list, pl_names)
