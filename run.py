@@ -62,28 +62,41 @@ def first_turn(player_one, player_two):
     print("\nTo see who plays first we flip a coin...\n")
     rand_int = randint(1, 2)
     print(f"Player One: {player_one.name}, choose:")
-    print("1. Heads\n2. Tails")
-    plr_input = input("")
-    print("The coin is flipped...")
-    time.sleep(2)
-    print("...")
-    time.sleep(2)
-    if rand_int == 1:
-        print("The coin shows Heads")
-    else:
-        print("The coin shows Tails")
+    while True:
+        print("1. Heads\n2. Tails")
+        try:
+            plr_input = int(input(""))
+            while True:
+                if plr_input > 2 or plr_input < 1:
+                    print("The number you entered is not in the list.")
+                    print("Try again:\n")
+                    break
+                else:
+                    print("The coin is flipped...")
+                    time.sleep(2)
+                    print("...")
+                    time.sleep(2)
+                    if rand_int == 1:
+                        print("The coin shows Heads")
+                    else:
+                        print("The coin shows Tails")
 
-    if int(plr_input) == rand_int:
-        print(f"{player_one.name} you will go first")
-        player_one.turn_pos = 1
-        player_two.turn_pos = 2
-        time.sleep(2)
-    else:
-        print(f"{player_two.name} go first")
-        player_one.turn_pos = 2
-        player_two.turn_pos = 1
-        if player_two.type == "player":
-            time.sleep(2)
+                    if plr_input == rand_int:
+                        print(f"{player_one.name} you will go first")
+                        player_one.turn_pos = 1
+                        player_two.turn_pos = 2
+                        time.sleep(2)
+                    else:
+                        print(f"{player_two.name} go first")
+                        player_one.turn_pos = 2
+                        player_two.turn_pos = 1
+                        if player_two.type == "player":
+                            time.sleep(2)
+                    return
+        except ValueError:
+            print("\nThis is not a number.")
+            print("Choose a number from the list:")
+            print("\n1. Heads\n2. Tails")
 
 
 def turn_switch(game_board, player_one, player_two):
@@ -118,7 +131,7 @@ def player_turn(game_brd, player):
                     print("Choose a different column to drop your counter in")
                     player_inpt = int(input("(Input a value from 1 - 7):\n"))
                 else:
-                    while game_brd.brd[0][player_inpt-1] != "\u25CB":
+                    while game_brd.board[0][player_inpt-1] != "\u25CB":
                         print(f"Column {player_inpt} is full, try again:")
                         player_inpt = int(input(""))
                         continue
@@ -137,7 +150,7 @@ def player_turn(game_brd, player):
         except IndexError:
             print("This is not a column.")
             print("Choose a column number to drop your counter")
-  
+
 
 def computer_turn(game_board, player):
     rand_time = randint(1, 2)
