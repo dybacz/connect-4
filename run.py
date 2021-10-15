@@ -505,8 +505,9 @@ def title_screen():
     print("*" + (" " * 13) + "Welcome to Python CONNECT-4!" + (" " * 13) + "*")
     _xtra = (" " * 5) + "*"
     print("*"+(" " * 5)+"Code Institute Project 3 - Python Essentials"+_xtra)
-    print("*" + (" " * 15) + "Created by: James Dybacz" + (" " * 15) + "*")
-    print("*" + (" " * 19) + "Copyright\u00A9 2021" + (" " * 19) + "*")
+    print("*" + (" " * 14) + "Created by: James Dybacz" + (" " * 16) + "*")
+    print("*" + (" " * 14) + "https://github.com/dybacz" + (" " * 15) + "*")
+    print("*" + (" " * 19) + "Copyright\u00A9 2021" + (" " * 20) + "*")
     print("*" + ("-" * 54) + "*")
 
 
@@ -521,7 +522,7 @@ def new_game():
     """
     title_screen()
     print("Game type:")
-    print("1. 1P vs AI\n2. 1P vs 2P\n3. How to play")
+    print("1. 1P vs CPU\n2. 1P vs 2P\n3. How to play")
     while True:
         try:
             select_players = int(input("\n"))
@@ -541,7 +542,7 @@ def new_game():
                     break
             break
         except (ValueError, TypeError):
-            print("That is not a numer\n")
+            print("That is not a number\n")
             print("Please select a Game type using its number (1 - 3)\n")
             print("1. 1P vs AI\n2. 1P vs 2P\n3. How to play")
 
