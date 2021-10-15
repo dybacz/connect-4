@@ -48,6 +48,11 @@ class Board:
 
 
 def play_game(game_board, player_one, player_two):
+    """
+    Generates title from player names, stores it to gameboard variable .title
+    initiates first turn(includes coin toss)
+    initiates turn switching algorithm.
+    """
 
     title_vs = f"{player_one.name} VS {player_two.name}"
     title_len = (len(title_vs)-1)
@@ -59,6 +64,15 @@ def play_game(game_board, player_one, player_two):
 
 
 def first_turn(player_one, player_two):
+    """
+    Coin toss to decide who goes first, coin face decided from
+    random integer 0 or 1.
+    Input from user is validated within a range of 2 [1, 2] and passed
+    through exception handeling for ValueError check
+    
+    Initial player turn position generated and stored in each players
+    class object as player.turn_pos
+    """
     print("\nTo see who plays first we flip a coin...\n")
     rand_int = randint(1, 2)
     print(f"Player One: {player_one.name}, choose:")
