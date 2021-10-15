@@ -76,7 +76,7 @@ def first_turn(player_one, player_two):
     while True:
         print("1. Heads\n2. Tails")
         try:
-            plr_input = int(input(""))
+            plr_input = int(input("\n"))
             while True:
                 if plr_input > 2 or plr_input < 1:
                     print("The number you entered is not in the list.")
@@ -133,7 +133,7 @@ def turn_switch(game_board, player_one, player_two):
     game_board.print_table()
     print("Draw")
     print("To play again press Enter")
-    player_input = input("")
+    player_input = input("\n")
     while player_input != "":
         player_input = input("To play again press Enter\n")
     new_game()
@@ -164,7 +164,7 @@ def player_turn(game_brd, player):
                 else:
                     while game_brd.board[0][player_inpt-1] != "\u25CB":
                         print(f"Column {player_inpt} is full, try again:")
-                        player_inpt = int(input(""))
+                        player_inpt = int(input("\n"))
                         continue
                     for i in range(game_brd.size[1]):
                         while game_brd.board[-1-i][player_inpt-1] != "\u25CB":
@@ -429,7 +429,7 @@ def _win(game_board, player):
     print("")
     print((" " * _gap) + player_wins + (" " * _gap))
     print("To play again press Enter")
-    player_input = input("")
+    player_input = input("\n")
     while player_input != "":
         player_input = input("To play again press Enter\n")
     new_game()
@@ -455,7 +455,7 @@ def color_pick(ctr_color_list, player_names):
         print(number, color.capitalize())
     while True:
         try:
-            number_col = int(input(""))
+            number_col = int(input("\n"))
             while True:
                 if number_col > len(ctr_color_list) or number_col < 1:
                     print("\nThe number you entered is not in the list.")
@@ -525,13 +525,13 @@ def new_game():
     print("1. 1P vs AI\n2. 1P vs 2P\n3. How to play")
     while True:
         try:
-            select_players = int(input(""))
+            select_players = int(input("\n"))
             while True:
                 if select_players > 3 or select_players < 1:
                     print("That number is not available for selection\n")
                     print("Please select a Game type (1 - 3)\n")
                     print("1. 1P vs AI\n2. 1P vs 2P\n3. How to play")
-                    select_players = int(input(""))
+                    select_players = int(input("\n"))
                 else:
                     if select_players == 1:
                         num_players = 1
@@ -552,7 +552,7 @@ def new_game():
         input_one = input("Player 1 - Please enter your name: \n")
         while len(input_one) > 10:
             print("Name too long - Please try a shorter name:")
-            input_one = input("")
+            input_one = input("\n")
         pl_names.append(input_one)
         plr_clr = color_pick(ctr_color_list, pl_names)
         print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
@@ -564,7 +564,7 @@ def new_game():
         input_one = input("Player 1 - Please enter your name: \n")
         while len(input_one) > 10:
             print("Name too long - Please try a shorter name:")
-            input_one = input("")
+            input_one = input("\n")
         pl_names.append(input_one)
         plr_clr = color_pick(ctr_color_list, pl_names)
         print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
@@ -573,7 +573,7 @@ def new_game():
         input_two = input("\nPlayer 2 - Please enter your name: \n")
         while len(input_two) > 10:
             print("Name too long - Please try a shorter name:")
-            input_two = input("")
+            input_two = input("\n")
         pl_names.append(input_two)
         plr_clr = color_pick(ctr_color_list, pl_names)
         print(f"{pl_names[1]} selected {plr_clr} "+colored("\u25CF", plr_clr))
