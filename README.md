@@ -1,14 +1,34 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# CONNECT-4
 
-Welcome dybacz,
+![CI logo](assets/images/readme/title-header.png)
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **August 17, 2021**
+Connect-4 is a python terminal game, which runs in the code institute mock terminal Heroku.
 
-## Reminders
+Players can try beat the computer to be the first player to connect 4 of your colored counters in a row.
+Or if that gets too easy, players can play against each other!
 
-* Your code must be placed in the `run.py` file
-* Your dependencies must be placed in the `requirements.txt` file
-* Do not edit any of the other files or your code may not deploy properly
+[Click here for the live version](https://connect-4-ci.herokuapp.com/)
+
+## How to Play
+#### Objective:
+* Be the first player to connect 4 of your colored counters in a row, either vertically, horizontally, or diagonally.
+
+#### How to play:
+* First, decide what color each player will be then decide who goes first through a random toin coss.
+* Players alternate turns, only one counter can be used per turn.
+* On your turn, drop one counter into any of the seven columns.
+* The game ends when there is a 4-in-a-row or a stalemate/draw.
+
+## Deployment:
+This project was deployed using Code Institute's mock terminal for Heroku
+* Steps for deployment:
+    * Fork or clone this repository
+    * Create a new Heroku app
+    * Set the buildpacks to ```Python``` 
+
+## Credits:
+* Code institue for the deployement terminal.
+* Wikipedia for the details of connect-4 game.
 
 ## Creating the Heroku app
 

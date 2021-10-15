@@ -485,7 +485,6 @@ def how_to():
     print("Players alternate turns, only one counter can be dropped per turn.")
     print("On your turn, drop one counter into any of the seven columns.")
     print("The game ends when there is a 4-in-a-row or a stalemate/draw.")
-    print("The starter of the previous game goes second on the next game.")
     while input("\nPress enter to go back.\n") != "":
         input("Press enter to go back.\n")
     new_game()
@@ -507,7 +506,7 @@ def title_screen():
     _xtra = (" " * 5) + "*"
     print("*"+(" " * 5)+"Code Institute Project 3 - Python Essentials"+_xtra)
     print("*" + (" " * 15) + "Created by: James Dybacz" + (" " * 15) + "*")
-    print("*" + (" " * 19) + "Copyright 2021 \u00A9" + (" " * 19) + "*")
+    print("*" + (" " * 19) + "Copyright\u00A9 2021" + (" " * 19) + "*")
     print("*" + ("-" * 54) + "*")
 
 
