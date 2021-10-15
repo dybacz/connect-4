@@ -553,7 +553,7 @@ def new_game():
         while len(input_one) > 10:
             print("Name too long - Please try a shorter name:")
             input_one = input("\n")
-        pl_names.append(input_one)
+        pl_names.append(input_one.capitalize())
         plr_clr = color_pick(ctr_color_list, pl_names)
         print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
         ctr_color_list.remove(plr_clr)
@@ -565,7 +565,7 @@ def new_game():
         while len(input_one) > 10:
             print("Name too long - Please try a shorter name:")
             input_one = input("\n")
-        pl_names.append(input_one)
+        pl_names.append(input_one.capitalize())
         plr_clr = color_pick(ctr_color_list, pl_names)
         print(f"{pl_names[0]} selected {plr_clr} "+colored("\u25CF", plr_clr))
         ctr_color_list.remove(plr_clr)
@@ -574,7 +574,7 @@ def new_game():
         while len(input_two) > 10:
             print("Name too long - Please try a shorter name:")
             input_two = input("\n")
-        pl_names.append(input_two)
+        pl_names.append(input_two.capitalize())
         plr_clr = color_pick(ctr_color_list, pl_names)
         print(f"{pl_names[1]} selected {plr_clr} "+colored("\u25CF", plr_clr))
         ctr_color_list.remove(plr_clr)
