@@ -108,17 +108,24 @@ def turn_switch(game_board, player_one, player_two):
 def player_turn(game_board, player):
     _ctr = colored("\u25CF", player.color)
     print(f"{player.name}'s turn ({_ctr} counters)")
-    print("Choose a column to drop your counter")
-    player_input = input("(Input a value from 1 - 7):\n")
-    while game_board.board[0][int(player_input)-1] != "\u25CB":
-        player_input = input(f"Column {player_input} is full, try again: \n")
-        continue
-    for i in range(game_board.size[1]):
-        while game_board.board[-1-i][int(player_input)-1] != "\u25CB":
+    print("Choose a column number to drop your counter")
+    while True:
+        try:
+            player_input = int(input("(Input a value from 1 - 7):\n"))
+            while game_board.board[0][player_input-1] != "\u25CB":
+                print(f"Column {player_input} is full, try again:")
+                player_input = int(input(""))
+                continue
+            for i in range(game_board.size[1]):
+                while game_board.board[-1-i][player_input-1] != "\u25CB":
+                    break
+                else:
+                    game_board.board[-1-i][player_input-1] = _ctr
+                    break
             break
-        else:
-            game_board.board[-1-i][int(player_input)-1] = _ctr
-            break
+        except ValueError:
+            print("This is not a number.")
+            print("Choose a column number to drop your counter")
     check_win(game_board, -1-i, int(player_input)-1, _ctr, player)
 
 
